@@ -19,6 +19,9 @@ class CancelBooking(BaseModel):
   start: str
   end: str
 
+class GetsStudentByName(BaseModel):
+  name:str = Field(...,min_lenght=2,max_length=50)
+  
 class DeleteStudent(BaseModel):
   email: Optional[str] = None
   phone_number: Optional[str] = None
