@@ -26,6 +26,7 @@ class AdminService:
         for user in users:
             user["_id"] = str(user["_id"])
         return users 
+        
     @staticmethod
     async def get_student_by_name(name):
         if not users:
@@ -35,6 +36,7 @@ class AdminService:
             user["_name"] = str(user["_name"])
             users.append(user)
         return users
+        
     @staticmethod
     async def delete_student(student_info):
         user = await user_collection.find_one({"_id":id})
