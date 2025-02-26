@@ -1,7 +1,7 @@
 from quart import Blueprint,request,jsonify,websocket
 import websockets
 from app.services.admin import AdminService
-from app.schemas.admin import DeleteStudent,BookRoom,CancelBooking
+from app.schemas.admin import DeleteStudent,GetsStudentByName,BookRoom,CancelBooking
 from app.utils.check_role import is_admin
 
 from app.services.active_connections import active_connections
@@ -43,8 +43,20 @@ async def get_all_students():
         students = await AdminService.get_all_students()
         return students
     except Exception:
-        return jsonify({"error":"an error accured"}), 500
-    
+        return jsonify({"error":"an error occured"}), 500
+
+@router.route("/student_name",methods = ["GET"])
+async def get_student_by_name():
+    try:
+        admin = await is_admin()
+        if not admin:
+            return jsonify({"error":"not authorized"}),401
+        student_info = GetsStudentByName(**student_info)    
+        students = await AdminService.get_student_by_name()
+        return students
+    except Exception:
+        return jsonify({"error":"an error has occured"})
+
 @router.route("/students_delete",methods=["DELETE"])
 async def delete_student():
     try:
@@ -69,7 +81,7 @@ async def create_student():
         new_student = await AdminService.create_student(arguments)
         return jsonify(new_student)
     except Exception:
-        return jsonify({"error":"an error has accured"}), 500
+        return jsonify({"error":"an error has occured"}), 500
 
 @router.route("/notifications",methods = ["GET"])
 async def notifications():
